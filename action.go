@@ -46,9 +46,10 @@ func ParseAction(s string) (*Action, error) {
 		}
 	}
 
-	if (resType == Commit || resType == Abort) &&
-		subm[4] != "" {
+	if (resType == Commit || resType == Abort) && subm[4] != "" {
 		return nil, errors.New("action cannot take object: " + s)
+	} else if (resType == Read || resType == Write) && subm[4] == "" {
+		return nil, errors.New("action must take object: " + s)
 	}
 
 	return &Action{

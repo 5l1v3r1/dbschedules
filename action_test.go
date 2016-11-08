@@ -26,7 +26,7 @@ func TestActionParse(t *testing.T) {
 		{Type: Abort, Transaction: "3"},
 		{Type: Read, Transaction: "9", Object: "XY"},
 		{Type: Write, Transaction: "ax", Object: "YX"},
-		{Type: Write, Transaction: "ax"},
+		{Type: Write, Transaction: "9", Object: "123"},
 	}
 	for i, a := range actions {
 		s := a.String()
@@ -38,7 +38,7 @@ func TestActionParse(t *testing.T) {
 		}
 	}
 
-	shouldFail := []string{"A1(X)", "W1()", "A", "W", "T1(X)", "T3"}
+	shouldFail := []string{"A1(X)", "C(Y)", "W1()", "A", "W", "W2", "R1", "T1(X)", "T3"}
 	for _, x := range shouldFail {
 		if _, err := ParseAction(x); err == nil {
 			t.Errorf("parse should fail: %s", x)
