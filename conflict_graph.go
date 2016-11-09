@@ -23,7 +23,7 @@ func BuildConflictGraph(s Schedule) ConflictGraph {
 		hist := history[a.Object]
 		if a.Type == Read {
 			for trans, actType := range hist {
-				if actType == Write {
+				if actType == Write && trans != a.Transaction {
 					res[a.Transaction][trans] = true
 				}
 			}
@@ -32,7 +32,9 @@ func BuildConflictGraph(s Schedule) ConflictGraph {
 			}
 		} else if a.Type == Write {
 			for trans := range hist {
-				res[a.Transaction][trans] = true
+				if trans != a.Transaction {
+					res[a.Transaction][trans] = true
+				}
 			}
 			hist[a.Transaction] = Write
 		}

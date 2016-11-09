@@ -6,7 +6,7 @@ import (
 )
 
 func TestBuildConflictGraph(t *testing.T) {
-	sched, err := ParseSchedule("R1(A) W2(A) W4(B) R3(A) R3(B) W1(B)")
+	sched, err := ParseSchedule("R1(A) W2(A) W4(B) R3(A) R3(B) W1(B) R5(C) W5(C)")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -16,6 +16,7 @@ func TestBuildConflictGraph(t *testing.T) {
 		"2": map[string]bool{"1": true},
 		"3": map[string]bool{"4": true, "2": true},
 		"4": map[string]bool{},
+		"5": map[string]bool{},
 	}
 	if !reflect.DeepEqual(expected, actual) {
 		t.Errorf("expected %v but got %v", expected, actual)
@@ -29,7 +30,8 @@ func TestConflictGraphCyclic(t *testing.T) {
 		"R1(X) R2(Y) R2(Y) W2(X) W3(Y) R1(X)":             true,
 		"R1(X) R2(Y) W3(Z) W2(Y) W2(X) R1(Z) W3(Y) W2(X)": true,
 		"R1(X) W1(Y) R2(X) W2(Z) R2(Y) W3(X) R3(Z)":       false,
-		"R1(X) W1(X) R1(X)":                               true,
+		"R1(X) W1(X) R1(X)":                               false,
+		"R1(X) W2(X) R1(X)":                               true,
 	}
 	for sched, expected := range scheds {
 		s, err := ParseSchedule(sched)
