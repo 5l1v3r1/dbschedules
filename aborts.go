@@ -43,13 +43,13 @@ func acaOrStrict(s Schedule, strict bool) bool {
 		switch x.Type {
 		case Write:
 			if strict {
-				if _, ok := objectLocks[x.Object]; ok {
+				if trans, ok := objectLocks[x.Object]; ok && trans != x.Transaction {
 					return false
 				}
 			}
 			objectLocks[x.Object] = x.Transaction
 		case Read:
-			if _, ok := objectLocks[x.Object]; ok {
+			if trans, ok := objectLocks[x.Object]; ok && trans != x.Transaction {
 				return false
 			}
 		case Commit, Abort:

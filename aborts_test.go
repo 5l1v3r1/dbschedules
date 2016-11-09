@@ -22,7 +22,7 @@ func TestACA(t *testing.T) {
 		"R1(A) W1(A) R2(A) W2(A) C2 C1": false,
 		"R2(A) R1(A) W1(A) W2(A) A1 C2": true,
 		"W1(A) W1(C) W1(A) C1":          true,
-		"W1(A) R1(C) W1(A) C1":          true,
+		"W1(A) R1(A) W1(A) C1":          true,
 	}
 	runAbortsTests(schedules, t, ACA)
 }
