@@ -29,10 +29,24 @@ func Recoverable(s Schedule) bool {
 
 // ACA checks if a schedule avoids cascading aborts.
 func ACA(s Schedule) bool {
+	return acaOrStrict(s, false)
+}
+
+// Strict checks if a schedule is strict.
+func Strict(s Schedule) bool {
+	return acaOrStrict(s, true)
+}
+
+func acaOrStrict(s Schedule, strict bool) bool {
 	objectLocks := map[string]string{}
 	for _, x := range s {
 		switch x.Type {
 		case Write:
+			if strict {
+				if _, ok := objectLocks[x.Object]; ok {
+					return false
+				}
+			}
 			objectLocks[x.Object] = x.Transaction
 		case Read:
 			if _, ok := objectLocks[x.Object]; ok {
