@@ -32,6 +32,8 @@ func TestConflictGraphCyclic(t *testing.T) {
 		"R1(X) W1(Y) R2(X) W2(Z) R2(Y) W3(X) R3(Z)":       false,
 		"R1(X) W1(X) R1(X)":                               false,
 		"R1(X) W2(X) R1(X)":                               true,
+		"R1(X) W2(X) W1(X)":                               true,
+		"R1(X) W2(X) W1(X) W3(X)":                         true,
 	}
 	for sched, expected := range scheds {
 		s, err := ParseSchedule(sched)

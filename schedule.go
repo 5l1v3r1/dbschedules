@@ -33,3 +33,19 @@ func (s Schedule) String() string {
 	}
 	return strings.Join(comps, " ")
 }
+
+// Transactions returns the transaction names which appear
+// in the schedule.
+// The names are sorted by first appearance in the
+// schedule.
+func (s Schedule) Transactions() []string {
+	var res []string
+	seen := map[string]bool{}
+	for _, x := range s {
+		if !seen[x.Transaction] {
+			seen[x.Transaction] = true
+			res = append(res, x.Transaction)
+		}
+	}
+	return res
+}
