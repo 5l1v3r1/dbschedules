@@ -26,3 +26,14 @@ func TestViewSerialize(t *testing.T) {
 		}
 	}
 }
+
+func TestConflictSerializableContainment(t *testing.T) {
+	for i := 0; i < 1000; i++ {
+		s := randomSchedule(false)
+		conSer := !BuildConflictGraph(s).Cyclic()
+		viewSer := ViewSerialize(s) != nil
+		if conSer && !viewSer {
+			t.Fatalf("inconsistent containment: %s", s)
+		}
+	}
+}
